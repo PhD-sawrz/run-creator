@@ -1,34 +1,16 @@
 import numpy as np
 
 
-def edit_gromacs_job_file(job_file, gpu_id):
-    with open(job_file, 'r') as file:
-        content = file.readlines()
-
-    parameter = '-gpu_id'
-    for line_number, line in enumerate(content):
-        if parameter in line:
-            line = np.array(line.split(' '))
-
-            index = np.where(line == parameter)[0][0]
-            line[index + 1] = str(gpu_id)
-
-            content[line_number] = ' '.join(line)
-
-    with open(job_file, 'w') as file:
-        file.writelines(content)
-
-
 def add_execution_batch(folder, job_file, queue_system, bash_list):
     # change directory
     command = 'cd {folder}\n'.format(folder=folder)
     bash_list.append(command)
 
-    command = 'sleep $((RANDOM%10))\n'
-    bash_list.append(command)
-
     # submit job
     if queue_system.lower() == 'slurm':
+        command = 'sleep $((RANDOM%10))\n'
+        bash_list.append(command)
+
         command = 'sbatch {job_file}\n'.format(job_file=job_file)
     else:
         command = './{job_file}\n'.format(job_file=job_file)
@@ -46,6 +28,24 @@ def write_bash_script(file_name, command_list):
     with open(file_name, 'w') as script:
         for command in command_list:
             script.write(command)
+
+
+def edit_gromacs_job_file(job_file, gpu_id):
+    with open(job_file, 'r') as file:
+        content = file.readlines()
+
+    parameter = '-gpu_id'
+    for line_number, line in enumerate(content):
+        if parameter in line:
+            line = np.array(line.split(' '))
+
+            index = np.where(line == parameter)[0][0]
+            line[index + 1] = str(gpu_id)
+
+            content[line_number] = ' '.join(line)
+
+    with open(job_file, 'w') as file:
+        file.writelines(content)
 
 
 def change_job_label(file_path, queueing_system, run_number, system_type):
