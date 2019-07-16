@@ -1,3 +1,24 @@
+import numpy as np
+
+
+def edit_gromacs_job_file(job_file, gpu_id):
+    with open(job_file, 'r') as file:
+        content = file.readlines()
+
+    parameter = '-gpu_id'
+    for line_number, line in enumerate(content):
+        if parameter in line:
+            line = np.array(line.split(' '))
+
+            index = np.where(line == parameter)[0][0]
+            line[index + 1] = str(gpu_id)
+
+            content[line_number] = ' '.join(line)
+
+    with open(job_file, 'w') as file:
+        file.writelines(content)
+
+
 def add_execution_batch(folder, job_file, queue_system, bash_list):
     # change directory
     command = 'cd {folder}\n'.format(folder=folder)
