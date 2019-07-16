@@ -4,7 +4,7 @@ import os
 from types import SimpleNamespace
 
 from copy_functions import copy, copy_job_file, copy_files_from_folder
-from writing import add_execution_batch, write_bash_script, change_job_label
+from writing import add_execution_batch, write_bash_script, change_job_file
 
 # ARGUMENT INTERFACE
 ap = argparse.ArgumentParser()
@@ -118,23 +118,24 @@ for run_number in range(name_space.start_run_number, name_space.end_run_number +
         copy(src=FORCE_FIELD_PATH, dest=force_field_destination_path)
 
         # copy job files into directory
-        gpu_id = system_id % name_space.max_gpus
 
         copy_job_file(src=START_JOB_FILE_PATH, dest=system_destination_path,
-                      job_type=name_space.job_type, new_name=name_space.start_job_file_name,
-                      simulation_framework=name_space.simulation_framework, gpu_id=gpu_id)
+                      job_type=name_space.job_type, new_name=name_space.start_job_file_name)
         copy_job_file(src=RESTART_JOB_FILE_PATH, dest=system_destination_path,
-                      job_type=name_space.job_type, new_name=name_space.restart_job_file_name,
-                      simulation_framework=name_space.simulation_framework, gpu_id=gpu_id)
+                      job_type=name_space.job_type, new_name=name_space.restart_job_file_name)
 
         # relabel job files
+        gpu_id = system_id % name_space.max_gpus
+
         job_path = os.path.join(system_destination_path, name_space.start_job_file_name)
-        change_job_label(file_path=job_path, queueing_system=name_space.job_queueing_system,
-                         system_type=system_type, run_number=run_number)
+        change_job_file(file_path=job_path, queueing_system=name_space.job_queueing_system,
+                        system_type=system_type, run_number=run_number,
+                        simulation_framework=name_space.simulation_framework, gpu_id=gpu_id)
 
         job_path = os.path.join(system_destination_path, name_space.restart_job_file_name)
-        change_job_label(file_path=job_path, queueing_system=name_space.job_queueing_system,
-                         system_type=system_type, run_number=run_number)
+        change_job_file(file_path=job_path, queueing_system=name_space.job_queueing_system,
+                        system_type=system_type, run_number=run_number,
+                        simulation_framework=name_space.simulation_framework, gpu_id=gpu_id)
 
         # copy simulation data
         copy_files_from_folder(system_source_file_paths, dest=system_destination_path)
