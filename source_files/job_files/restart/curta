@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#SBATCH --job-name=01_CUC_Mg
+#SBATCH --mail-user=sandro.wrzalek@fu-berlin.de
+#SBATCH --mail-type=all
+#SBATCH --time=02-01:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=16
+#SBATCH --mem-per-cpu=1G
+#SBATCH --partition=gpu
+#SBATCH --output=prod0.out        # File to which standard out will be written
+#SBATCH --error=prod0.err            # File to which standard err will be written
+#SBATCH --qos=medium
+#SBATCH --gres=gpu:1
+
+set -e #Exit immediately if a command exits with a non-zero status
+sleep $((RANDOM%10))
+
+#GROMACS
+module add GROMACS/2019-fosscuda-2018b
+
+#production run
+gmx mdrun -maxh 48 -deffnm rna0 -s rna0.tpr -cpi rna0.cpt -append -nb gpu -pme gpu -ntmpi 4 -npme 1

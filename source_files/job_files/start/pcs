@@ -1,0 +1,4 @@
+label='Mg_01'
+
+tsp -L $label gmx grompp -f a14_ol3_NVT_production.mdp -c rna_nvt.gro -p rna.top -o rna0.tpr
+tsp -d -L $label gmx mdrun -maxh 1 -deffnm rna0 -nt 6 -gpu_id 0 -nb gpu -pme gpu

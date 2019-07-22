@@ -1,0 +1,59 @@
+title                    = MD production in the NVT ensemble 
+; Run parameters
+integrator              = md                    ; leap-frog integrator
+nsteps                  = 1000000000            ; 2000 ns
+dt                      = 0.002                 ; 2 fs
+comm_mode               = Linear	
+
+; Output control
+nstenergy               = 500                   ; save energies every 1.0 ps
+nstlog                  = 500                   ; update log file every 1.0 ps
+nstxout                 = 1000000               ; save coordinates every 2 ns
+nstvout                 = 1000000               ; save velocities every 2 ns
+nstfout                 = 1000000               ; save ??? every 2 ns
+nstxtcout               = 1000                  ; save coordinates every 2 ps
+xtc_precision           = 1000
+
+; Bond parameters
+continuation            = no                    ; first dynamics run 
+constraint_algorithm    = lincs                 ; holonomic constraints 
+constraints             = h-bonds               ; bonds to H are constrained
+lincs_iter              = 1                     ; accuracy of LINCS
+lincs_order             = 4                     ; also related to accuracy
+
+; Neighbor searching and vdW
+cutoff-scheme           = Verlet
+verlet-buffer-drift	    = 0.005
+ns_type                 = grid                  ; search neighboring grid cells
+nstlist                 = 20                    ; largely irrelevant with Verlet
+rvdw                 	= 1.2                   ; as in Lindorf-Larsen et al. Proteins 17 1950 (2010)
+
+; Electrostatics
+coulombtype             = PME                   ; Particle Mesh Ewald for long-range electrostatics
+rcoulomb                = 1.2                   ; as in Lindorf-Larsen et al. Proteins 17 1950 (2010)
+pme_order               = 4                     ; cubic interpolation
+fourierspacing          = 0.13                  ; grid spacing for FFT
+optimize_fft            = yes
+
+; Temperature coupling
+tcoupl                  = V-rescale             ; modified Berendsen thermostat
+tc-grps                 = RNA Water_and_ions    ; two coupling groups - more accurate
+tau_t                   = 0.1   0.1             ; time constant, in ps
+ref_t                   = 298   298             ; reference temperature, one for each group, in K
+ld_seed                 = -1                    ; calculates from process ID
+
+; Pressure coupling 
+pcoupl                  = no                    ; pressure coupling is on for NPT
+
+; Periodic boundary conditions
+pbc                     = xyz                   ; 3-D PBC
+
+; Dispersion correction
+DispCorr                = EnerPres              ; long range dispersion corrections for Energy and Pressure 
+
+; Velocity generation
+gen_vel		            = yes		            ; assign velocities from Maxwell distribution
+gen_temp	            = 298		            ; temperature for Maxwell distribution
+gen_seed	            = -1		            ; generate a random seed
+
+

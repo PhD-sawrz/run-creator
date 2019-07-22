@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#SBATCH --job-name=01_CUC_Mg
+#SBATCH --mail-user=sandro.wrzalek@fu-berlin.de
+#SBATCH --mail-type=all
+#SBATCH --time=02-00:01:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=20
+#SBATCH --mem-per-cpu=1G
+#SBATCH --partition=main
+#SBATCH --output=prod0.out        # File to which standard out will be written
+#SBATCH --error=prod0.err            # File to which standard err will be written
+#SBATCH --gres=gpu:1
+
+set -e #Exit immediately if a command exits with a non-zero status
+sleep $((RANDOM%10))
+
+#GROMACS
+module load gromacs/single/2019.1
+
+#production run
+gmx mdrun -maxh 48 -deffnm rna0 -s rna0.tpr -cpi rna0.cpt -append -ntmpi 2 -ntomp 10 

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#SBATCH --job-name=01_CUC_Mg
+#SBATCH --workdir=.
+#SBATCH --mail-user=sandro.wrzalek@fu-berlin.de
+#SBATCH --mail-type=all
+#SBATCH --time=2-00:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=48
+#SBATCH --output=prod0.out        # File to which standard out will be written
+#SBATCH --error=prod0.err         # File to which standard err will be written
+
+#load modules
+module purge
+module load intel/2018.4 impi/2018.4 mkl/2018.4 gromacs/2019.1
+
+#production run
+srun gmx_mpi grompp -f a14_ol3_NVT_production.mdp -c rna_nvt.gro -p rna.top -o rna0.tpr
+srun gmx_mpi mdrun -maxh 47 -deffnm rna0

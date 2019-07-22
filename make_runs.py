@@ -47,7 +47,7 @@ if name_space.job_queueing_system is None:
     raise Exception('Please specify the hjob queuing system of your job type.')
 
 # locations/paths of files
-FILES_LOCATION = 'create_run'
+FILES_LOCATION = 'source_files'
 FORCE_FIELD_LOCATION = os.path.join(FILES_LOCATION, 'ff')
 JOB_FILES_LOCATION = os.path.join(FILES_LOCATION, 'job_files')
 START_JOB_FILES_LOCATION = os.path.join(JOB_FILES_LOCATION, 'start')
