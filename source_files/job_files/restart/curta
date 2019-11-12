@@ -20,4 +20,4 @@ sleep $((RANDOM%10))
 module add GROMACS/2019-fosscuda-2018b
 
 #production run
-gmx mdrun -maxh 48 -deffnm rna0 -s rna0.tpr -cpi rna0.cpt -append -nb gpu -pme gpu -ntmpi 4 -npme 1
+gmx mdrun -maxh 48 -deffnm rna0 -s rna0.tpr -cpi rna0.cpt -append -nb gpu -pme gpu -ntmpi 2 -ntomp 8 -npme 1

@@ -1,0 +1,6 @@
+{
+  "run_folder_path": "/home/sandro/Desktop/test",
+  "job_type": "curta",
+  "force_field": "amber14sb_OL15.ff",
+  "job_queueing_system": "slurm"
+}

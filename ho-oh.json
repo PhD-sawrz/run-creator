@@ -1,0 +1,6 @@
+{
+  "run_folder_path": "/home/sandro/Desktop/CUC_pile",
+  "job_type": "pcs",
+  "force_field": "amber14sb_OL15.ff",
+  "job_queueing_system": "tsp"
+}

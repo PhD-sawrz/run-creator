@@ -21,4 +21,4 @@ module add GROMACS/2019-fosscuda-2018b
 
 #production run
 gmx grompp -f a14_ol3_NVT_production.mdp -c rna_nvt.gro -p rna.top -o rna0.tpr
-gmx mdrun -maxh 48 -deffnm rna0 -nb gpu -pme gpu -ntmpi 4 -npme 1
+gmx mdrun -maxh 48 -deffnm rna0 -nb gpu -pme gpu -ntmpi 2 -ntomp 8 -npme 1
